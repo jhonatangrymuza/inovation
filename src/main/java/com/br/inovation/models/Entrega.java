@@ -14,5 +14,8 @@ public class Entrega {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String endereco;
+
+    @OneToOne
+    private Pedido pedido;
 }
