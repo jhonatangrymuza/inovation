@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -26,6 +28,10 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public Object save(LoginDTO dto) {
+        UserDetails userInDb = repository.findByLogin(dto.getLogin());
+        if(Objects.nonNull(userInDb)){
+            throw new RuntimeException("Usuario já cadastrado");
+        }
         Usuario user = new Usuario();
         user.setLogin(dto.getLogin());
         user.setPassword(passwordEncoder.encode((dto.getPassword())));

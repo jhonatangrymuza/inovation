@@ -1,4 +1,4 @@
-package com.br.inovation.rest;
+package com.br.inovation.controller;
 
 import com.br.inovation.dto.ClienteDTO;
 import com.br.inovation.models.Cliente;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cliente")
-public class ClienteRest {
+public class ClienteController {
 
     @Autowired
     ClienteService service;
@@ -30,20 +30,28 @@ public class ClienteRest {
 
     @PostMapping()
     public ResponseEntity<Object> post(@RequestBody @Valid ClienteDTO dto) {
-        Cliente cliente = new Cliente();
-        BeanUtils.copyProperties(dto, cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cliente));
+        try {
+            Cliente cliente = new Cliente();
+            BeanUtils.copyProperties(dto, cliente);
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cliente));
+        } catch (Exception e){
+            throw new RuntimeException("Ocorreu erros ao processar a requisicao" + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> put(@PathVariable Long id, @RequestBody @Valid ClienteDTO dto) {
-        Optional<Cliente> cliente  = service.findById(id);
-        if(!cliente.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente informado não existe");
+        try {
+            Optional<Cliente> cliente  = service.findById(id);
+            if(!cliente.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente informado não existe");
+            }
+            Cliente upCliente = cliente.get();
+            upCliente.setNome(dto.getNome());
+            return ResponseEntity.status(HttpStatus.OK).body(service.save(upCliente));
+        } catch (Exception e){
+            throw new RuntimeException("Ocorreu erros ao processar a requisicao" + e.getMessage());
         }
-        Cliente upCliente = cliente.get();
-        upCliente.setNome(dto.getNome());
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(upCliente));
     }
 
     @DeleteMapping("/{id}")

@@ -1,12 +1,8 @@
-package com.br.inovation.rest;
+package com.br.inovation.controller;
 
 import com.br.inovation.dto.EntregaDTO;
-import com.br.inovation.dto.PedidoDTO;
-import com.br.inovation.models.Cliente;
 import com.br.inovation.models.Entrega;
 import com.br.inovation.models.Pedido;
-import com.br.inovation.repositories.EntregaRepository;
-import com.br.inovation.repositories.PedidoRepository;
 import com.br.inovation.services.EntregaService;
 import com.br.inovation.services.PedidoService;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/entrega")
-public class EntregaRest {
+public class EntregaController {
 
     @Autowired
     EntregaService service;
@@ -39,32 +35,41 @@ public class EntregaRest {
 
     @PostMapping()
     public ResponseEntity<Object> post(@RequestBody @Valid EntregaDTO dto) {
-        Optional<Pedido> pedido  = pedidoService.findById(dto.getPedido().getId());
-        if(!pedido.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido informado não existe");
-        }
+        try{
+            Optional<Pedido> pedido  = pedidoService.findById(dto.getPedido().getId());
+            if(!pedido.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido informado não existe");
+            }
 
-        Entrega entrega = new Entrega();
-        BeanUtils.copyProperties(dto, entrega);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entrega));
+            Entrega entrega = new Entrega();
+            BeanUtils.copyProperties(dto, entrega);
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entrega));
+        } catch (Exception e){
+            throw new RuntimeException("Ocorreu erros ao processar a requisicao" + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
+
     public ResponseEntity<Object> put(@PathVariable Long id, @RequestBody @Valid EntregaDTO dto) {
-        Optional<Pedido> pedido  = pedidoService.findById(dto.getPedido().getId());
-        if(!pedido.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido informado não existe");
-        }
+        try{
+            Optional<Pedido> pedido  = pedidoService.findById(dto.getPedido().getId());
+            if(!pedido.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido informado não existe");
+            }
 
-        Optional<Entrega> entrega  = service.findById(id);
-        if(!pedido.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrega informada não existe");
-        }
-        Entrega upEntrega = entrega.get();
-        upEntrega.setEndereco(dto.getEndereco());
-        upEntrega.setPedido(pedido.get());
+            Optional<Entrega> entrega  = service.findById(id);
+            if(!pedido.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrega informada não existe");
+            }
+            Entrega upEntrega = entrega.get();
+            upEntrega.setEndereco(dto.getEndereco());
+            upEntrega.setPedido(pedido.get());
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(upEntrega));
+            return ResponseEntity.status(HttpStatus.OK).body(service.save(upEntrega));
+        } catch (Exception e){
+            throw new RuntimeException("Ocorreu erros ao processar a requisicao" + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

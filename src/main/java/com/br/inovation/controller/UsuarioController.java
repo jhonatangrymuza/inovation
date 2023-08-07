@@ -1,4 +1,4 @@
-package com.br.inovation.rest;
+package com.br.inovation.controller;
 
 import com.br.inovation.dto.LoginDTO;
 import com.br.inovation.services.UsuarioService;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 @RestController
 @RequestMapping("/usuario")
-public class UsuarioRest {
+public class UsuarioController {
 
     @Autowired
     UsuarioService service;

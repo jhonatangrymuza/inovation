@@ -15,8 +15,8 @@ public class PedidoService {
     PedidoRepository repository;
 
     @Transactional
-    public Pedido save(Pedido cliente) {
-        return repository.save(cliente);
+    public Pedido save(Pedido pedido) {
+        return repository.save(pedido);
     }
     @Transactional
     public Optional<Pedido> findById(Long id) {

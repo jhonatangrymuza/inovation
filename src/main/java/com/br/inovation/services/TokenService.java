@@ -33,7 +33,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256("chavesecreta");
             return JWT.require(algorithm)
-                    .withIssuer("auth-api")
+                    .withIssuer("delivery")
                     .build()
                     .verify(token)
                     .getSubject();
