@@ -16,3 +16,11 @@ http://localhost:8080/h2-console
 As rotas de exemplo está collection do postman estão em resources
 Collection.postman_collection.json
 
+Primeiro cria um usuario PASTA usuario dentro do postman
+
+Segundo chama o login com usuario e senha informado PASTA login dentro do postman
+
+Adicionado o token como bearer token retornando nas requisições.
+
+
+![img.png](img.png)
