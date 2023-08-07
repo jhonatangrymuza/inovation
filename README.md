@@ -13,8 +13,8 @@ http://localhost:8080/swagger-ui.html
 URL H2
 http://localhost:8080/h2-console
 
-As rotas de exemplo está collection do postman estão em resources
-Collection.postman_collection.json
+As rotas de exemplo está collection do postman estão na pasta resources do projeto
+importar no postaman a collection > Collection.postman_collection.json
 
 Primeiro cria um usuario PASTA usuario dentro do postman
 
