@@ -2,12 +2,11 @@ package com.br.inovation.models;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @Entity
@@ -26,17 +25,17 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return new ArrayList<>();
     }
 
     @Override
     public String getPassword() {
-        return login;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return password;
+        return login;
     }
 
     @Override
